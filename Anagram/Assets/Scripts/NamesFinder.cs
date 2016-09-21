@@ -7,9 +7,25 @@ using UnityEngine;
 
 public class NamesFinder : MonoBehaviour
 {
-    public delegate void ExampleCallback(int lineCount);
+    public struct NameSernamePare
+    {
+        public string name;
+        public string sername;
 
-    private List<string> result = new List<string>();
+        public NameSernamePare(string name, string sername)
+        {
+            this.name = name;
+            this.sername = sername;
+        }
+
+        public override string ToString()
+        {
+            return name + " " + sername;
+        }
+    }
+
+    private List<NameSernamePare> result = new List<NameSernamePare>();
+    private List<string> withoutSernames = new List<string>();
     private string username = "Albert Katya asd";
 
     public event Action OnNameFounding;
@@ -19,8 +35,11 @@ public class NamesFinder : MonoBehaviour
     private bool female;
 
     private NamesBase maleBase;
-   
+
     private NamesBase femaleBase;
+
+    private List<string> sernames = new List<string>();
+    private bool findingComplete;
 
     [UsedImplicitly]
     public void Start()
@@ -28,8 +47,10 @@ public class NamesFinder : MonoBehaviour
         maleBase = Resources.Load("names/male") as NamesBase;
         femaleBase = Resources.Load("names/female") as NamesBase;
     }
+
     public void Find(string username, bool male, bool female)
     {
+        findingComplete = false;
         this.male = male;
         this.female = female;
         this.username = username.ToUpper();
@@ -89,16 +110,44 @@ public class NamesFinder : MonoBehaviour
             }
             if (correct)
             {
-                lock (result)
+
+                lock (withoutSernames)
                 {
-                    result.Add(name);
+                    withoutSernames.Add(name);
+                }
+                if (bufName.Length > 1)
+                {
+                    //тут мы нашли имя. Надо найти фамилию
+                    foreach (var sername in sernames)
+                    {
+                        if (sername.Length != bufName.Length)
+                        {
+                            continue;
+                        }
+                        string leftChars = bufName; //оставшиеся символы
+                        foreach (char sernameChar in sername)
+                        {
+                            int index = leftChars.IndexOf(sernameChar);
+                            if (index != -1)
+                            {
+                                leftChars = leftChars.Remove(index, 1);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        if (leftChars.Length == 0)
+                        {
+                            lock (result)
+                            {
+                                result.Add(new NameSernamePare(name, sername));
+                            }
+                        }
+                    }
                 }
             }
         }
-
-        lock (result)
-        {
-            result.Add("Complete");
-        }
+        findingComplete = true;
     }
 }
