@@ -31,7 +31,11 @@ public class SerbamesBaseEditor : Editor
 
                         if (line != null)
                         {
-                            sernamesBase.sernames.Add(line);
+                            line = line.ToUpper();
+                            if (!sernamesBase.sernames.Contains(line))
+                            {
+                                sernamesBase.sernames.Add(line);
+                            }
                         }
                     } while (line != null);
                     streamReader.Close();
