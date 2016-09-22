@@ -64,11 +64,11 @@
     <Reference Include="DOTween">
       <HintPath>Assets\Demigiant\DOTween\DOTween.dll</HintPath>
     </Reference>
-    <Reference Include="DOTween46">
-      <HintPath>Assets\Demigiant\DOTween\DOTween46.dll</HintPath>
-    </Reference>
     <Reference Include="DOTween43">
       <HintPath>Assets\Demigiant\DOTween\DOTween43.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween46">
+      <HintPath>Assets\Demigiant\DOTween\DOTween46.dll</HintPath>
     </Reference>
     <Reference Include="DOTween50">
       <HintPath>Assets\Demigiant\DOTween\DOTween50.dll</HintPath>
@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Names\NamesBase.cs" />
     <Compile Include="Assets\Scripts\Names\SernameBase.cs" />
     <Compile Include="Assets\Scripts\NamesFinder.cs" />
+    <Compile Include="Assets\Scripts\SerializableDictionary.cs" />
     <Compile Include="Assets\Scripts\StartPanel.cs" />
     <Compile Include="Assets\SingletonPerfect\Singleton.cs" />
   </ItemGroup>

@@ -119,37 +119,36 @@ public class NamesFinder : MonoBehaviour
                 if (bufName.Length > 1)
                 {
                     //тут мы нашли имя. Надо найти фамилию
-                    foreach (var sername in sernamesBase.sernames)
+                    if (sernamesBase.SernameList.Count > bufName.Length)
                     {
-                        if (sername.Length != bufName.Length)
+                        List<string> correctSernames = sernamesBase.SernameList[bufName.Length-1].sernames;
+                        foreach (string sername in correctSernames)
                         {
-                            continue;
-                        }
-                        string leftChars = bufName; //оставшиеся символы
-                        foreach (char sernameChar in sername)
-                        {
-                            int index = leftChars.IndexOf(sernameChar);
-                            if (index != -1)
+                            string leftChars = bufName; //оставшиеся символы
+                            foreach (char sernameChar in sername)
                             {
-                                leftChars = leftChars.Remove(index, 1);
+                                int index = leftChars.IndexOf(sernameChar);
+                                if (index != -1)
+                                {
+                                    leftChars = leftChars.Remove(index, 1);
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
-                            else
+                            if (leftChars.Length == 0)
                             {
-                                break;
-                            }
-                        }
-                        if (leftChars.Length == 0)
-                        {
-                            lock (result)
-                            {
-                                result.Add(new NameSernamePare(name, sername));
+                                lock (result)
+                                {
+                                    result.Add(new NameSernamePare(name, sername));
+                                }
                             }
                         }
                     }
                 }
             }
         }
-
         lock (result)
         {
             result.Add(new NameSernamePare("Complite", "___"));

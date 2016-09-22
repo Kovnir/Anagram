@@ -7,6 +7,12 @@ using UnityEngine;
 [Serializable]
 public class SernamesBase : ScriptableObject
 {
-    [SerializeField]
-    public List<string> sernames = new List<string>();
+    [System.Serializable]
+    public class SameLengthSenameList
+    {
+        [SerializeField]
+        public List<string> sernames = new List<string>();
+    }
+
+    [SerializeField] public List<SameLengthSenameList> SernameList = new List<SameLengthSenameList>();
 }
