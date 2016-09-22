@@ -38,7 +38,7 @@ public class NamesFinder : MonoBehaviour
 
     private NamesBase femaleBase;
 
-    private List<string> sernames = new List<string>();
+    private SernamesBase sernamesBase;
     private bool findingComplete;
 
     [UsedImplicitly]
@@ -46,6 +46,7 @@ public class NamesFinder : MonoBehaviour
     {
         maleBase = Resources.Load("names/male") as NamesBase;
         femaleBase = Resources.Load("names/female") as NamesBase;
+        sernamesBase = Resources.Load("names/SernamesBase") as SernamesBase;
     }
 
     public void Find(string username, bool male, bool female)
@@ -95,7 +96,7 @@ public class NamesFinder : MonoBehaviour
 
         foreach (var name in namesList)
         {
-            string bufName = username;
+            string bufName = username.Replace(" ", String.Empty);
             bool correct = false;
             foreach (char nameChar in name)
             {
@@ -118,7 +119,7 @@ public class NamesFinder : MonoBehaviour
                 if (bufName.Length > 1)
                 {
                     //тут мы нашли имя. Надо найти фамилию
-                    foreach (var sername in sernames)
+                    foreach (var sername in sernamesBase.sernames)
                     {
                         if (sername.Length != bufName.Length)
                         {
@@ -147,6 +148,11 @@ public class NamesFinder : MonoBehaviour
                     }
                 }
             }
+        }
+
+        lock (result)
+        {
+            result.Add(new NameSernamePare("Complite", "___"));
         }
         findingComplete = true;
     }
