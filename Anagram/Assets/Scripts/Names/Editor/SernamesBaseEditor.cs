@@ -10,8 +10,6 @@ using System.Linq;
 [CanEditMultipleObjects]
 public class SerbamesBaseEditor : Editor
 {
-    private int selected = 0;
-
     public override void OnInspectorGUI()
     {
         SernamesBase sernamesBase = (SernamesBase) target;

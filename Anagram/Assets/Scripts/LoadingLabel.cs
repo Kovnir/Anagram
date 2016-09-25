@@ -16,16 +16,16 @@ public class LoadingLabel : MonoBehaviour {
 	
 	private IEnumerator UpdateText()
 	{
-	    int starsCount = 1;
+	    int starsCount = 0;
 	    while (true)
 	    {
 	        yield return new WaitForSeconds(0.25f);
 	        starsCount ++;
 	        if (starsCount > 3)
 	        {
-	            starsCount = 1;
+	            starsCount = 0;
 	        }
-	        text.text = "Loading";
+	        text.text = "LOADING";
 	        for (int i = 0; i < starsCount; i++)
 	        {
                 text.text += ".";

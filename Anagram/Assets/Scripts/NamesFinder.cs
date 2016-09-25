@@ -7,15 +7,17 @@ using UnityEngine;
 
 public class NamesFinder : MonoBehaviour
 {
-    public struct NameSernamePare
+    public class NameSernamePare
     {
         public string name;
         public string sername;
+        public NamesBase.Sex sex;
 
-        public NameSernamePare(string name, string sername)
+        public NameSernamePare(string name, string sername, NamesBase.Sex sex)
         {
             this.name = name;
             this.sername = sername;
+            this.sex = sex;
         }
 
         public override string ToString()
@@ -25,78 +27,64 @@ public class NamesFinder : MonoBehaviour
     }
 
     private List<NameSernamePare> result = new List<NameSernamePare>();
-    private List<string> withoutSernames = new List<string>();
-    private string username = "Albert Katya asd";
 
-    public event Action OnNameFounding;
-    public event Action OnSearchComplete;
-
-    private bool male;
-    private bool female;
+    private string username;
 
     private NamesBase maleBase;
 
     private NamesBase femaleBase;
 
     private SernamesBase sernamesBase;
-    private bool findingComplete;
+
+    private bool complete;
+
+    public event Action<List<NameSernamePare>> OnSearchingComplete;
 
     [UsedImplicitly]
-    public void Start()
+    private void Start()
     {
         maleBase = Resources.Load("names/male") as NamesBase;
         femaleBase = Resources.Load("names/female") as NamesBase;
         sernamesBase = Resources.Load("names/SernamesBase") as SernamesBase;
     }
 
-    public void Find(string username, bool male, bool female)
+    [UsedImplicitly]
+    private void Update()
     {
-        findingComplete = false;
-        this.male = male;
-        this.female = female;
+        if (complete)
+        {
+            if (OnSearchingComplete != null)
+            {
+                OnSearchingComplete.Invoke(result);
+            }
+
+            complete = false;
+        }
+    }
+
+    public void Find(string username)
+    {
+        result = new List<NameSernamePare>();
         this.username = username.ToUpper();
         Thread t = new Thread(new ThreadStart(Find));
         t.Start();
     }
 
-    [UsedImplicitly]
-    private void Update()
-    {
-        if (result.Count > 0)
-        {
-            lock (result)
-            {
-                while (result.Count > 0)
-                {
-                    Debug.Log(result[0]);
-                    result.Remove(result[0]);
-                }
-            }
-        }
-    }
-
     private void Find()
     {
-        List<string> namesList = new List<string>();
-        if (male && female)
-        {
-            namesList = maleBase.names.Union(femaleBase.names).ToList();
-        }
-        else
-        {
-            if (male)
-            {
-                namesList = maleBase.names;
-            }
-            if (female)
-            {
-                namesList = femaleBase.names;
-            }
-        }
+        Search(maleBase, username);
+        Search(femaleBase, username);
+        complete = true;
+    }
 
+    private void Search(NamesBase namesBase, string username)
+    {
+        List<string> namesList = namesBase.names;
+        NamesBase.Sex sex = namesBase.nameSex;
+        string usernameWithoutSpaces = username.Replace(" ", String.Empty);
         foreach (var name in namesList)
         {
-            string bufName = username.Replace(" ", String.Empty);
+            string bufName = usernameWithoutSpaces;
             bool correct = false;
             foreach (char nameChar in name)
             {
@@ -111,37 +99,59 @@ public class NamesFinder : MonoBehaviour
             }
             if (correct)
             {
-
-                lock (withoutSernames)
-                {
-                    withoutSernames.Add(name);
-                }
                 if (bufName.Length > 1)
                 {
-                    //тут мы нашли имя. Надо найти фамилию
-                    if (sernamesBase.SernameList.Count > bufName.Length)
+                    //тут мы нашли имя. 
+                    //надо проверить нет ли его ещё в базе (может другого пола). Если нет, надо найти фамилию
+                    List<NameSernamePare> nameSernamePare;
+                    lock (result)
                     {
-                        List<string> correctSernames = sernamesBase.SernameList[bufName.Length-1].sernames;
-                        foreach (string sername in correctSernames)
+                        nameSernamePare = result.FindAll(x => x.name == name);
+                    }
+
+                    if (nameSernamePare.Count > 0)
+                    {
+                        if (nameSernamePare[0].sex != sex)
                         {
-                            string leftChars = bufName; //оставшиеся символы
-                            foreach (char sernameChar in sername)
+                            nameSernamePare.ForEach(x =>
                             {
-                                int index = leftChars.IndexOf(sernameChar);
-                                if (index != -1)
+                                lock (x)
                                 {
-                                    leftChars = leftChars.Remove(index, 1);
+                                    x.sex = NamesBase.Sex.Both;
                                 }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                            if (leftChars.Length == 0)
+                            });
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Something wrong!");
+                        }
+                    }
+                    else
+                    {
+                        if (sernamesBase.SernameList.Count > bufName.Length)
+                        {
+                            List<string> correctSernames = sernamesBase.SernameList[bufName.Length - 1].sernames;
+                            foreach (string sername in correctSernames)
                             {
-                                lock (result)
+                                string leftChars = bufName; //оставшиеся символы
+                                foreach (char sernameChar in sername)
                                 {
-                                    result.Add(new NameSernamePare(name, sername));
+                                    int index = leftChars.IndexOf(sernameChar);
+                                    if (index != -1)
+                                    {
+                                        leftChars = leftChars.Remove(index, 1);
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                                if (leftChars.Length == 0)
+                                {
+                                    lock (result)
+                                    {
+                                        result.Add(new NameSernamePare(name, sername, sex));
+                                    }
                                 }
                             }
                         }
@@ -149,10 +159,6 @@ public class NamesFinder : MonoBehaviour
                 }
             }
         }
-        lock (result)
-        {
-            result.Add(new NameSernamePare("Complite", "___"));
-        }
-        findingComplete = true;
     }
+
 }

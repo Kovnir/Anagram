@@ -7,6 +7,15 @@ using UnityEngine;
 [Serializable]
 public class NamesBase : ScriptableObject
 {
+    public enum Sex
+    {
+        Male,
+        Female,
+        Both,
+    }
+
+    public Sex nameSex;
+
     [SerializeField]
     public List<string> names = new List<string>();
 

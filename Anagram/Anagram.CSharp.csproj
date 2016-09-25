@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -77,16 +79,20 @@
   <ItemGroup>
     <Compile Include="Assets\Demigiant\DOTween\Examples\Basics.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Examples\Sequences.cs" />
-    <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\Fader.cs" />
-    <Compile Include="Assets\Scripts\InputPanel.cs" />
-    <Compile Include="Assets\Scripts\InputValidator.cs" />
+    <Compile Include="Assets\Scripts\FinalPanel\FinalPanel.cs" />
     <Compile Include="Assets\Scripts\LoadingLabel.cs" />
     <Compile Include="Assets\Scripts\Names\NamesBase.cs" />
     <Compile Include="Assets\Scripts\Names\SernameBase.cs" />
     <Compile Include="Assets\Scripts\NamesFinder.cs" />
-    <Compile Include="Assets\Scripts\SerializableDictionary.cs" />
-    <Compile Include="Assets\Scripts\StartPanel.cs" />
+    <Compile Include="Assets\Scripts\ResultPanel\NamePanel.cs" />
+    <Compile Include="Assets\Scripts\ResultPanel\NamesPage.cs" />
+    <Compile Include="Assets\Scripts\ResultPanel\ResultBottomButton.cs" />
+    <Compile Include="Assets\Scripts\ResultPanel\ResultPanel.cs" />
+    <Compile Include="Assets\Scripts\StartPanel\Controller.cs" />
+    <Compile Include="Assets\Scripts\StartPanel\InputPanel.cs" />
+    <Compile Include="Assets\Scripts\StartPanel\InputValidator.cs" />
+    <Compile Include="Assets\Scripts\StartPanel\StartPanel.cs" />
     <Compile Include="Assets\SingletonPerfect\Singleton.cs" />
   </ItemGroup>
   <ItemGroup>

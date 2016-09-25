@@ -6,7 +6,7 @@ public class InputValidator : MonoBehaviour {
 
     public void Start()
     {
-        GetComponent<InputField>().onValidateInput += delegate (string input, int charIndex, char addedChar) { return MyValidate(addedChar); };
+        GetComponent<InputField>().onValidateInput += (input, charIndex, addedChar) => MyValidate(addedChar);
     }
 
     private char MyValidate(char charToValidate)

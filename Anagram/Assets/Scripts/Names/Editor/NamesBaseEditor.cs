@@ -1,4 +1,6 @@
 ﻿﻿using System;
+﻿using System.Collections.Generic;
+﻿using System.IO;
 ﻿using UnityEditor;
 using UnityEngine;
 using System.Linq;
@@ -7,34 +9,49 @@ using System.Linq;
 [CanEditMultipleObjects]
 public class NamesBaseEditor : Editor
 {
-    private int selected = 0;
-
-    private string str = null;
-
     public override void OnInspectorGUI()
     {
         NamesBase names = (NamesBase) target;
 
         EditorGUILayout.LabelField("Contains "+ names.names.Count + " names.");
 
-        str = EditorGUILayout.TextArea(str);
-        if (GUILayout.Button("Add to base"))
+        names.nameSex = (NamesBase.Sex) EditorGUILayout.EnumPopup("Sex of name:", names.nameSex);
+                if (GUILayout.Button("Load base"))
         {
-            var list = str.Split('\n').ToList();
-            list.ForEach(x =>
-            {
-                if (!names.names.Contains(x))
-                {
-                    names.names.Add(x);
-                }
-            });
-            str = "";
-        }
-
-        if (GUILayout.Button("Remove \\r"))
-        {
-            names.names = names.names.Select(x => x.Replace("\r", String.Empty)).ToList();
+            string path = EditorUtility.OpenFilePanel("Choose a file", "", "txt");
+            Load(path, names);
         }
         EditorUtility.SetDirty(target);
+    }
+
+
+    private void Load(string path, NamesBase namesBase)
+    {
+        try
+        {
+            string line;
+            StreamReader streamReader = new StreamReader(path);
+            using (streamReader)
+            {
+                namesBase.names = new List<string>();
+                do
+                {
+                    line = streamReader.ReadLine();
+                    if (line != null)
+                    {
+                        line = line.Replace("\r", String.Empty);
+                        if (!namesBase.names.Contains(line))
+                        {
+                            namesBase.names.Add(line);
+                        }
+                    }
+                } while (line != null);
+                streamReader.Close();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+        }
     }
 }

@@ -8,14 +8,14 @@ public class Fader : MonoBehaviour
 
     private CanvasGroup canvasGroup;
 
-    public virtual void FadeIn (Action OnComplete = null)
+    public virtual void FadeIn (Action OnComplete = null, float time = 1f)
 	{
         if (canvasGroup == null)
         {
             canvasGroup = GetComponent<CanvasGroup>();
         }
         canvasGroup.alpha = 0;
-        canvasGroup.DOFade(1,1).OnComplete(() =>
+        canvasGroup.DOFade(1, time).OnComplete(() =>
         {
             if (OnComplete != null)
             {
@@ -23,18 +23,27 @@ public class Fader : MonoBehaviour
             }
         });
 	}
-    public virtual void FadeOut (Action OnComplete = null)
+    public virtual void FadeOut (Action OnComplete = null, float time = 1f)
 	{
         if (canvasGroup == null)
         {
             canvasGroup = GetComponent<CanvasGroup>();
         }
-        canvasGroup.DOFade(0,1).OnComplete(() =>
+        canvasGroup.DOFade(0, time).OnComplete(() =>
         {
             if (OnComplete != null)
             {
                 OnComplete();
             }
         });
+    }
+
+    public void Hide()
+    {
+        if (canvasGroup == null)
+        {
+            canvasGroup = GetComponent<CanvasGroup>();
+        }
+        canvasGroup.alpha = 0;
     }
 }

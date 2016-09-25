@@ -1,22 +1,30 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
-using DG.Tweening;
-using JetBrains.Annotations;
 using UnityEngine.UI;
 
 public class StartPanel : Fader
 {
     [SerializeField] private Fader anagramTitle;
+    [SerializeField] private Fader nameText;
     [SerializeField] private Fader inputPanel;
     [SerializeField] private Fader confirmButton;
 
-    public override void FadeIn(Action OnComplete = null)
+    public override void FadeIn(Action OnComplete = null, float time = 1)
     {
+        anagramTitle.Hide();
+        inputPanel.Hide();
+        confirmButton.Hide();
         anagramTitle.FadeIn(() =>
         {
-            inputPanel.FadeIn();
-        });
+            inputPanel.FadeIn(() =>
+            {
+                if (inputPanel.GetComponent<InputPanel>().Username != String.Empty)
+                {
+                    confirmButton.FadeIn();
+                }
+            }
+                , time);
+        }, time);
         inputPanel.GetComponent<InputPanel>().DataCorrect += OnDataCorrect;
     }
 
@@ -37,6 +45,6 @@ public class StartPanel : Fader
     public void OnConfirmButtonPressed()
     {
         InputPanel inputPanelScript = inputPanel.GetComponent<InputPanel>();
-        Controller.Instance.OnUserDataEntered(inputPanelScript.Username, inputPanelScript.Male, inputPanelScript.Female);
+        Controller.Instance.OnUserDataEntered(inputPanelScript.Username);
     }
 }
