@@ -1,10 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DG.Tweening;
-using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class FinalPanel : MonoBehaviour
@@ -12,10 +11,10 @@ public class FinalPanel : MonoBehaviour
     [SerializeField]
     private Fader bottomPanel;
     [SerializeField]
+    private GameObject outputPanel;
+    [SerializeField]
     private Fader anagramm;
 
-
-    [SerializeField]
     private List<RectTransform> charList;
     private List<RectTransform> workedPart;
     private List<float> places;
@@ -27,6 +26,16 @@ public class FinalPanel : MonoBehaviour
 
     public void Change(string username, string resultName)
     {
+        Transform panel = transform.FindChild("OutputPanel(Clone)");
+        if (panel != null)
+        {
+            Destroy(panel.gameObject);
+        }
+        panel = Instantiate(outputPanel).transform; 
+        panel.SetParent(this.transform, true);
+        panel.transform.localPosition = Vector3.zero;
+        charList = panel.GetComponent<OutputPanel>().charList;
+
         bottomPanel.Hide();
         anagramm.Hide();
 
