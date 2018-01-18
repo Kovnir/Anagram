@@ -26,7 +26,7 @@ public class FinalPanel : MonoBehaviour
 
     public void Change(string username, string resultName)
     {
-        Transform panel = transform.FindChild("OutputPanel(Clone)");
+        Transform panel = transform.Find("OutputPanel(Clone)");
         if (panel != null)
         {
             Destroy(panel.gameObject);
@@ -106,7 +106,7 @@ public class FinalPanel : MonoBehaviour
                 flyingTransform = workedPart[i];
                 workedPart[i] = bufTransform;
 
-                bufTransform.DOAnchorPosX(places[i], 1).SetEase(Ease.InOutSine);
+                bufTransform.DOAnchorPosY(places[i], 1).SetEase(Ease.InOutSine);
                 float startYPosition = bufTransform.anchoredPosition.y;
                 bufTransform.DOAnchorPosY(startYPosition + (animationUp? 1 : -1)* 40, 0.5f).SetEase(Ease.InOutSine).OnComplete(
                     () =>
