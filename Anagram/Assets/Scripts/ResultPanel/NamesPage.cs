@@ -25,6 +25,10 @@ public class NamesPage : MonoBehaviour
 
     private void Disable()
     {
-        namePanels.ForEach(x => x.gameObject.SetActive(false));
+        foreach (var x in namePanels)
+        {
+            x.gameObject.SetActive(false);
+            x.OnNameClick -= OnNameSelected;
+        }
     }
 }
