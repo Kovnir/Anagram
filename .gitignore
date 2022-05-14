@@ -1,2 +1,5 @@
 Anagram/Library/
 Anagram/Temp/
+Logs
+*.csproj
+*.sln
