@@ -2,10 +2,10 @@
 <h1>ANAGRAM</h1>
 <p>A small application inspired by Harry Potter that finds another name consisting of the letters of yours.</p>
 <br>
-<br>
 <img src="Doc/voldemort.gif">
 <br>
-<p>Ideal for villains and secret agents.</p>
+<br>
+<p><b>Ideal for villains and secret agents. 🦹</b></p>
 <br>
 <img src="Doc/gameplay.gif">
 
