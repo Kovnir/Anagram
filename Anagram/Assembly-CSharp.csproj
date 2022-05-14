@@ -48,7 +48,7 @@
      <Compile Include="Assets/Demigiant/DOTween/Examples/Basics.cs" />
      <Compile Include="Assets/Scripts/LoadingLabel.cs" />
      <Compile Include="Assets/Scripts/StartPanel/StartPanel.cs" />
-     <Compile Include="Assets/Scripts/Names/SernameBase.cs" />
+     <Compile Include="Assets/Scripts/Names/SurnameBase.cs" />
      <Compile Include="Assets/Scripts/Names/NamesBase.cs" />
      <Compile Include="Assets/Scripts/NamesFinder.cs" />
      <Compile Include="Assets/Scripts/Fader.cs" />

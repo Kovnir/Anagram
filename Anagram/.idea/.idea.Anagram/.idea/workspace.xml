@@ -18,6 +18,7 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/FinalPanel/FinalPanel.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Fader.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Names/SernameBase.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Names/SurnameBase.cs" />
       </list>
     </option>
   </component>
@@ -73,5 +74,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="471" y="291" width="786" height="490" key="find.popup" timestamp="1652511603620">
+      <screen x="0" y="38" width="1728" height="998" />
+    </state>
+    <state x="471" y="291" width="786" height="490" key="find.popup/0.38.1728.998@0.38.1728.998" timestamp="1652511603620" />
   </component>
 </project>

@@ -47,7 +47,7 @@
               <e p="SernamesBaseEditor.cs" t="Include" />
             </e>
             <e p="NamesBase.cs" t="Include" />
-            <e p="SernameBase.cs" t="Include" />
+            <e p="SurnameBase.cs" t="Include" />
           </e>
           <e p="NamesFinder.cs" t="Include" />
           <e p="ResultPanel" t="Include">

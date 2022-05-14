@@ -34,7 +34,7 @@ public class NamesFinder : MonoBehaviour
 
     private NamesBase femaleBase;
 
-    private SernameBase sernameBase;
+    private SurnameBase surnameBase;
 
     private bool complete;
 
@@ -45,7 +45,7 @@ public class NamesFinder : MonoBehaviour
     {
         maleBase = Resources.Load("names/male") as NamesBase;
         femaleBase = Resources.Load("names/female") as NamesBase;
-        sernameBase = Resources.Load("names/SernamesBase") as SernameBase;
+        surnameBase = Resources.Load("names/SurnamesBase") as SurnameBase;
     }
 
     [UsedImplicitly]
@@ -128,10 +128,10 @@ public class NamesFinder : MonoBehaviour
                     }
                     else
                     {
-                        if (sernameBase.SernameList.Count > bufName.Length)
+                        if (surnameBase.SernameList.Count > bufName.Length)
                         {
-                            List<string> correctSernames = sernameBase.SernameList[bufName.Length - 1].sernames;
-                            foreach (string sername in correctSernames)
+                            List<string> correctSurnames = surnameBase.SernameList[bufName.Length - 1].surnames;
+                            foreach (string sername in correctSurnames)
                             {
                                 string leftChars = bufName; //оставшиеся символы
                                 foreach (char sernameChar in sername)

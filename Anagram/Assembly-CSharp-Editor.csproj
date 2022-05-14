@@ -43,7 +43,7 @@
   <ItemGroup>
      <Compile Include="Assets/Editor/CrossPlatformInput/CrossPlatformInputInitialize.cs" />
      <Compile Include="Assets/Scripts/Names/Editor/NamesBaseEditor.cs" />
-     <Compile Include="Assets/Scripts/Names/Editor/SernamesBaseEditor.cs" />
+     <Compile Include="Assets/Scripts/Names/Editor/SurnamesBaseEditor.cs" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>
