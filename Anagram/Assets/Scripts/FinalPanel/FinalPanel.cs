@@ -16,15 +16,10 @@ public class FinalPanel : MonoBehaviour
     private Fader anagramm;
 
     private List<RectTransform> charList;
-    private List<RectTransform> workedPart;
-    private List<float> places;
 
     private const int CHARS_COUNT = 22;
 
-    private string userName;
-    private string resultName;
-
-    public void Change(string username, string resultName)
+    public void Change(string userName, string resultName)
     {
         Transform panel = transform.Find("OutputPanel(Clone)");
         if (panel != null)
@@ -39,10 +34,9 @@ public class FinalPanel : MonoBehaviour
         bottomPanel.Hide();
         anagramm.Hide();
 
-        this.userName = username.ToUpper();
-        this.resultName = resultName;
-        workedPart = new List<RectTransform>();
-        places = new List<float>();
+        userName = userName.ToUpper();
+        var workedPart = new List<RectTransform>();
+        var places = new List<float>();
         int difference = Mathf.Min(CHARS_COUNT - userName.Length, CHARS_COUNT);
         for (int i = 0; i < CHARS_COUNT; i++)
         {
@@ -60,66 +54,66 @@ public class FinalPanel : MonoBehaviour
         {
             workedPart[i].GetComponent<Text>().text = userName[i].ToString();
         }
-        StartCoroutine(Change());
+        StartCoroutine(Change(workedPart, places, userName, resultName));
     }
 
-    private IEnumerator Change()
+    private IEnumerator Change(List<RectTransform> workedPart, List<float> places, string currentName, string resultName)
     {
         yield return new WaitForSeconds(2);
-        string currentname = userName;
         bool animationUp = true; 
         while (true)
         {
-            int index = GetFirstIncorrectChar(currentname, resultName);
-            if (index == resultName.Count())
+            int oldPlaceId = GetFirstIncorrectChar(currentName, resultName);
+            if (oldPlaceId == resultName.Count())
             {
                 break;
             }
-            char flyingChar = currentname[index];
-            currentname = Replace(currentname, index, ' ');
+            char flyingChar = currentName[oldPlaceId];
+            currentName = Replace(currentName, oldPlaceId, ' ');
             
-            RectTransform flyingTransform = workedPart[index];
-            workedPart[index] = null;
+            RectTransform flyingTransform = workedPart[oldPlaceId];
+            workedPart[oldPlaceId] = null;
             
             while (flyingChar != ' ')
             {
-                //i = индект указывающий на новое место
-                int i = GetNewPlace(flyingChar, currentname);
+                int newPlaceId = GetNewPlace(flyingChar, resultName, currentName);
 
                 char bufChar = flyingChar;
-                flyingChar = currentname[i];
-                resultName = Replace(resultName, i, bufChar);
+                flyingChar = currentName[newPlaceId];
+                currentName = Replace(currentName, newPlaceId, bufChar);
 
                 RectTransform bufTransform = flyingTransform;
-                flyingTransform = workedPart[i];
-                workedPart[i] = bufTransform;
+                flyingTransform = workedPart[newPlaceId];
+                workedPart[newPlaceId] = bufTransform;
 
-                bufTransform.DOAnchorPosX(places[i], 1).SetEase(Ease.InOutSine);
-                float startYPosition = bufTransform.anchoredPosition.y;
-                bufTransform.DOAnchorPosY(startYPosition + (animationUp? 1 : -1)* 40, 0.5f).SetEase(Ease.InOutSine).OnComplete(
-                    () =>
-                    {
-                        bufTransform.DOAnchorPosY(startYPosition, 0.5f).SetEase(Ease.InOutSine);
-                    });
-                bufTransform.DOScale(1.5f, 0.5f).SetEase(Ease.InOutSine).OnComplete(() =>
-                {
-                    bufTransform.DOScale(1, 0.5f).SetEase(Ease.InOutSine);
-                });
+                yield return Animate(bufTransform, places[newPlaceId], animationUp);
                 animationUp = !animationUp;
-                yield return new WaitForSeconds(0.5f);
             }
         }
-        Debug.Log(currentname);
+        Debug.Log(currentName);
         bottomPanel.FadeIn();
         anagramm.FadeIn();
     }
 
-    private int GetNewPlace(char flyingChar, string currentname)
+    private IEnumerator Animate(RectTransform transformToAnimate, float place, bool animationUp)
+    {
+        float startYPosition = transformToAnimate.anchoredPosition.y;
+        transformToAnimate.DOAnchorPosX(place, 1).SetEase(Ease.InOutSine);
+        transformToAnimate.DOAnchorPosY(startYPosition + (animationUp ? 1 : -1) * 40, 0.5f).SetEase(Ease.InOutSine).OnComplete(
+            () => { transformToAnimate.DOAnchorPosY(startYPosition, 0.5f).SetEase(Ease.InOutSine); });
+        transformToAnimate.DOScale(1.5f, 0.5f).SetEase(Ease.InOutSine).OnComplete(() =>
+        {
+            transformToAnimate.DOScale(1, 0.5f).SetEase(Ease.InOutSine);
+        });
+        yield return new WaitForSeconds(0.5f);
+    }
+
+    private int GetNewPlace(char flyingChar, string resultName, string currentName)
     {
         int i = 0;
         for (i = 0; i < resultName.Count(); i++)
         {
-            if (resultName[i] == flyingChar && currentname[i] != flyingChar)
+            if (resultName[i] == flyingChar && currentName[i] != flyingChar)
             {
                 break;
             }
