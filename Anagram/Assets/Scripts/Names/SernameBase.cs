@@ -5,7 +5,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "SernamesBase", menuName = "SernamesBase", order = 1)]
 [Serializable]
-public class SernamesBase : ScriptableObject
+public class SernameBase : ScriptableObject
 {
     [System.Serializable]
     public class SameLengthSenameList

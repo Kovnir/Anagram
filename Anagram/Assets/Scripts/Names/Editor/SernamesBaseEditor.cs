@@ -6,30 +6,30 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 
-[CustomEditor(typeof (SernamesBase))]
+[CustomEditor(typeof (SernameBase))]
 [CanEditMultipleObjects]
 public class SerbamesBaseEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        SernamesBase sernamesBase = (SernamesBase) target;
+        SernameBase sernameBase = (SernameBase) target;
 
         EditorGUILayout.LabelField("Contains names:");
 
-        for (int i = 0; i < sernamesBase.SernameList.Count; i ++)
+        for (int i = 0; i < sernameBase.SernameList.Count; i ++)
         {
-            EditorGUILayout.LabelField(i+1 + " chars: \t" + sernamesBase.SernameList[i].sernames.Count);
+            EditorGUILayout.LabelField(i+1 + " chars: \t" + sernameBase.SernameList[i].sernames.Count);
         }
 
         if (GUILayout.Button("Load base"))
         {
             string path = EditorUtility.OpenFilePanel("Choose a file", "", "txt");
-            Load(path, sernamesBase);
+            Load(path, sernameBase);
         }
         EditorUtility.SetDirty(target);
     }
 
-    private void Load(string path, SernamesBase sernamesBase)
+    private void Load(string path, SernameBase sernameBase)
     {
         try
         {
@@ -37,7 +37,7 @@ public class SerbamesBaseEditor : Editor
             StreamReader streamReader = new StreamReader(path);
             using (streamReader)
             {
-                sernamesBase.SernameList = new List<SernamesBase.SameLengthSenameList>();
+                sernameBase.SernameList = new List<SernameBase.SameLengthSenameList>();
                 do
                 {
                     line = streamReader.ReadLine();
@@ -45,13 +45,13 @@ public class SerbamesBaseEditor : Editor
                     {
                         line = line.ToUpper();
                         int length = line.Length;
-                        while (sernamesBase.SernameList.Count < length)
+                        while (sernameBase.SernameList.Count < length)
                         {
-                            sernamesBase.SernameList.Add(new SernamesBase.SameLengthSenameList());
+                            sernameBase.SernameList.Add(new SernameBase.SameLengthSenameList());
                         }
-                        if (!sernamesBase.SernameList[length-1].sernames.Contains(line))
+                        if (!sernameBase.SernameList[length-1].sernames.Contains(line))
                         {
-                            sernamesBase.SernameList[length-1].sernames.Add(line);
+                            sernameBase.SernameList[length-1].sernames.Add(line);
                         }
                     }
                 } while (line != null);
