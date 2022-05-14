@@ -3,3 +3,6 @@ Anagram/Temp/
 Logs
 *.csproj
 *.sln
+Anagram/obj
+Anagram/UserSettings
+Anagram/.idea
