@@ -42,6 +42,14 @@ public class StartPanel : Fader
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            OnConfirmButtonPressed();
+        }
+    }
+
     public void OnConfirmButtonPressed()
     {
         InputPanel inputPanelScript = inputPanel.GetComponent<InputPanel>();
