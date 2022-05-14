@@ -67,46 +67,34 @@ public class FinalPanel : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         string currentname = userName;
-        int index = 0;
         bool animationUp = true; 
         while (true)
         {
-            for (index = 0; index < resultName.Count(); index++)
-            {
-                if (resultName[index] != currentname[index] && currentname[index] != ' ')
-                {
-                    break;
-                }
-            }
+            int index = GetFirstIncorrectChar(currentname, resultName);
             if (index == resultName.Count())
             {
                 break;
             }
             char flyingChar = currentname[index];
             currentname = Replace(currentname, index, ' ');
+            
             RectTransform flyingTransform = workedPart[index];
             workedPart[index] = null;
+            
             while (flyingChar != ' ')
             {
                 //i = индект указывающий на новое место
-                int i = 0;
-                for (i = 0; i < resultName.Count(); i++)
-                {
-                    if (resultName[i] == flyingChar && currentname[i] != flyingChar)
-                    {
-                        break;
-                    }
-                }
-                
+                int i = GetNewPlace(flyingChar, currentname);
+
                 char bufChar = flyingChar;
                 flyingChar = currentname[i];
-                currentname = Replace(currentname, i, bufChar);
+                resultName = Replace(resultName, i, bufChar);
 
                 RectTransform bufTransform = flyingTransform;
                 flyingTransform = workedPart[i];
                 workedPart[i] = bufTransform;
 
-                bufTransform.DOAnchorPosY(places[i], 1).SetEase(Ease.InOutSine);
+                bufTransform.DOAnchorPosX(places[i], 1).SetEase(Ease.InOutSine);
                 float startYPosition = bufTransform.anchoredPosition.y;
                 bufTransform.DOAnchorPosY(startYPosition + (animationUp? 1 : -1)* 40, 0.5f).SetEase(Ease.InOutSine).OnComplete(
                     () =>
@@ -124,6 +112,35 @@ public class FinalPanel : MonoBehaviour
         Debug.Log(currentname);
         bottomPanel.FadeIn();
         anagramm.FadeIn();
+    }
+
+    private int GetNewPlace(char flyingChar, string currentname)
+    {
+        int i = 0;
+        for (i = 0; i < resultName.Count(); i++)
+        {
+            if (resultName[i] == flyingChar && currentname[i] != flyingChar)
+            {
+                break;
+            }
+        }
+
+        return i;
+    }
+
+    private int GetFirstIncorrectChar(string currentname, string result)
+    {
+        int index = 0;
+        for (index = 0; index < result.Count(); index++)
+        {
+            //if not match or space
+            if (result[index] != currentname[index] && currentname[index] != ' ')
+            {
+                break;
+            }
+        }
+
+        return index;
     }
 
     private string Replace(string str,int index, char newChar)
