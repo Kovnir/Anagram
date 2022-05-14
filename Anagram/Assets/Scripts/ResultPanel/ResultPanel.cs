@@ -36,7 +36,7 @@ public class ResultPanel : MonoBehaviour
         resultBottomButtons = new List<ResultBottomButton>();
         while (resultBottomButtonHolder.childCount > 0)
         {
-            Destroy(resultBottomButtonHolder.GetChild(resultBottomButtonHolder.childCount - 1).gameObject);
+            DestroyImmediate(resultBottomButtonHolder.GetChild(resultBottomButtonHolder.childCount - 1).gameObject);
         }
         for (int pageNum = 0; pageNum <  Math.Ceiling((double) nameSernamePares.Count / NAMES_IN_PAGE); pageNum ++)
         {
